@@ -1,7 +1,7 @@
 -- A script that prepares a MYSQL server for this project
 
 -- This creates the database if it does not exist
-CREATE IF NOT EXISTS hbnb_dev_db;
+CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 -- This creates a new user if it does not exist
 CREATE USER IF NOT EXISTS 'hbnd_dev'@'localhost' IDENTIFIED BY 'hbnd_dev_pwd';
 -- This line grants all privileges to the database
