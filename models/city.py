@@ -2,7 +2,7 @@
 """ City Module for HBNB project """
 from models.base_model import BaseModel, Base
 from models import storage_type
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 if storage_type == "db":
@@ -25,6 +25,7 @@ if storage_type == "db":
             "State",
             back_populates="cities"
          )
+
         places = relationship(
             "Place",
             back_populates="cities",

@@ -7,8 +7,8 @@ from sqlalchemy.orm import relationship
 
 
 if storage_type == "db":
-    class State(BaseModel):
-        """ State class """
+    class State(BaseModel, Base):
+        """State class """
         __tablename__ = "states"
 
         name = Column(
@@ -22,5 +22,13 @@ if storage_type == "db":
         )
 else:
     class State(BaseModel):
-        """ State class"""
+        """State class"""
         name = ""
+
+        @property
+        def cities(self):
+            from models import storage
+            i = [pop for pop in storage.all().values()
+                    if pop.__class__.__name__ == "City" and 
+                    pop.state_id == self.id]
+            return i
