@@ -1,5 +1,7 @@
+#!/usr/bin/node
 from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
+
 
 class User(BaseModel, Base):
     """User class"""
