@@ -64,7 +64,7 @@ class DBStorage:
         if obj:
             session = self.__session()
             if obj in session:
-            session.delete(obj)
+                session.delete(obj)
 
     def reload(self):
         """create all tables in the database"""
