@@ -4,8 +4,6 @@
 from models.base_model import BaseModel, Base
 from models import storage_type
 from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
