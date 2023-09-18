@@ -6,7 +6,7 @@ from models import storage_type
 from sqlalchemy import Column, Integer, String, Sequence, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base(engine)
+Base = declarative_base()
 
 
 class BaseModel:
@@ -19,7 +19,7 @@ class BaseModel:
         )
 
         created_at = Column(
-            DataTime,
+            DateTime,
             nullable=False,
             default=datetime.utcnow()
         )
