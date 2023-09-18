@@ -8,28 +8,29 @@ from sqlalchemy.orm import relationship
 
 if storage_type == "db":
     class State(BaseModel, Base):
-        """State class """
+        """ State class
+
+            Attributes:
+                name: ""
+        """
         __tablename__ = "states"
-
-        name = Column(
-            String(128),
-            nullable=False
-        )
-
-        cities = relationship(
-            "City",
-            back_populates="state",
-            cascade="all, delete"
-        )
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", backref="state",
+                              cascade="all, delete")
 else:
     class State(BaseModel):
-        """State class"""
+        """ State class 
+
+            Attribute:
+                name: ""
+        """
         name = ""
 
         @property
         def cities(self):
+            """setter property"""
             from models import storage
-            i = [pop for pop in storage.all().values()
-                    if pop.__class__.__name__ == "City" and 
+            lista = [pop for pop in storage.all().values()
+                    if pop.__class__.__name__ == "City" and
                     pop.state_id == self.id]
-            return i
+            return lista
