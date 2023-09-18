@@ -12,7 +12,3 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
-
-    def __init__(self, *args, **kwargs):
-        """This method initializes the User instance"""
-        super().__init__(*args, **kwargs)
