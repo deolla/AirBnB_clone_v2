@@ -7,6 +7,7 @@ from sqlalchemy import Column, String
 """from sqlalchemy.orm import relationship"""
 """from sqlalchemy.ext.declarative import declarative_base"""
 
+
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     if storage_type == "db":
@@ -24,4 +25,3 @@ class User(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """this method initializes review"""
         super().__init__(*args, **kwargs)
-"""reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")"""
