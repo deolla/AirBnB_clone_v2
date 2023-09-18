@@ -7,21 +7,18 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
-if storage_type == "db":
-    class User(BaseModel, Base):
-        """This class defines a user by various attributes"""
+class User(BaseModel, Base):
+    """This class defines a user by various attributes"""
+    if storage_type == "db":
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
-
-else:
-    class User(BaseModel):
-        """ This class defines a user by various attributes """
+    else:
         email = ""
         password = ""
         first_name = ""
         last_name = ""
 
-reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
+"""reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")"""
