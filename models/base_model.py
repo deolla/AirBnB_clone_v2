@@ -6,13 +6,11 @@ from models import storage_type
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-
 Base = declarative_base()
 
 
 class BaseModel:
     """Base class for all hbnb models
-
         Attributes:
             id: int
             create_at: datetime

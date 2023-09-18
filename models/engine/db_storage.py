@@ -77,6 +77,8 @@ class DBStorage:
     def close(self):
         """This is a close method"""
         self.__session.remove()
+            if obj in session:
+                session.delete(obj)
 
     def reload(self):
         """create all tables in the database"""
