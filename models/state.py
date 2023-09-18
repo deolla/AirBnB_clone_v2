@@ -13,7 +13,8 @@ if storage_type == "db":
 
         name = Column(
             String(128),
-            nullable=False)
+            nullable=False
+        )
 
         cities = relationship(
             "City",

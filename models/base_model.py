@@ -6,7 +6,7 @@ from models import storage_type
 from sqlalchemy import Column, Integer, String, Sequence, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+Base = declarative_base(engine)
 
 
 class BaseModel:
