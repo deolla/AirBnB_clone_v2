@@ -12,7 +12,6 @@ from models.amenity import Amenity
 from models.review import Review
 from datetime import datetime
 
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -114,39 +113,43 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
+        if not arg:
             print("** class name missing **")
             return
+        elif " " not in arg:
+            if arg not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = HBNBCommand.classes[arg]()
+        else:
+            dict_arg = {}
+            args = arg.split()
 
-        param = args.split(' ')
-        class_name = param[0]
-        params= {}
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+            if args[0] not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        args_list = param[1:]
-
-        for arg in args_list:
-            key, value = arg.split('=')
-            if value[0] == '"' and value[-1] == '"':
-                value = value[1:-1].replace('_', ' ')
-            elif '.' in value:
-                value = float(value)
-            else:
-                try:
-                    value = int(value)
-                except ValueError:
+            for k in range(1, len(args)):
+                if '=' not in args[k]:
                     continue
-            params[key] = value
-        new_instance = HBNBCommand.classes[class_name]()
-        for key, value in params.items():
-            setattr(new_instance, key, value)
+                pop, lop = args[k].split("=")
+                if lop.startswith("\""):
+                    lop = lop[1:-1]
+                if not lop.replace('.', '', 1).replace('-', '', 1).isdigit()\
+                        or lop.startswith('0'):
+                    lop = lop.replace('_', ' ')
+                elif '.' in lop:
+                    lop = float(lop)
+                else:
+                    lop = int(lop)
+                dict_arg[pop] = lop
 
-        storage.save()
+            new_instance = HBNBCommand.classes[args[0]](**dict_arg)
+        storage.new(new_instance)
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -228,11 +231,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
