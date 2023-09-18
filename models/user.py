@@ -21,4 +21,7 @@ class User(BaseModel, Base):
         first_name = ""
         last_name = ""
 
+    def __init__(self, *args, **kwargs):
+        """initializes Review"""
+        super().__init__(*args, **kwargs)
 """reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")"""
