@@ -23,3 +23,5 @@ else:
         password = ""
         first_name = ""
         last_name = ""
+
+reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
