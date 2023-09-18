@@ -125,29 +125,29 @@ class HBNBCommand(cmd.Cmd):
                 return
             new_instance = HBNBCommand.classes[args]()
         else:
-            d = {}
+            dict_arg = {}
             args = args.split()
 
             if args[0] not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
 
-            for i in range(1, len(args)):
-                if '=' not in args[i]:
+            for k in range(1, len(args)):
+                if '=' not in args[k]:
                     continue
-                a, b = args[i].split("=")
-                if b.startswith("\""):
-                    b = b[1:-1]
-                if not b.replace('.', '', 1).replace('-', '', 1).isdigit()\
-                        or b.startswith('0'):
-                    b = b.replace('_', ' ')
-                elif '.' in b:
-                    b = float(b)
+                pop, lop = args[k].split("=")
+                if lop.startswith("\""):
+                    lop = lop[1:-1]
+                if not lop.replace('.', '', 1).replace('-', '', 1).isdigit()\
+                        or lop.startswith('0'):
+                    lop = lop.replace('_', ' ')
+                elif '.' in lop:
+                    lop = float(lop)
                 else:
-                    b = int(b)
-                d[a] = b
+                    lop = int(lop)
+                dict_arg[pop] = lop
 
-            new_instance = HBNBCommand.classes[args[0]](**d)
+            new_instance = HBNBCommand.classes[args[0]](**dict_arg)
         storage.new(new_instance)
         print(new_instance.id)
         storage.save()
@@ -345,6 +345,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
