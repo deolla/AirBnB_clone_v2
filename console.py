@@ -119,34 +119,38 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
+        elif " " not in args:
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = HBNBCommand.classes[args]()
+        else:
+            d = {}
+            args = args.split()
 
-        param = args.split(' ')
-        class_name = param[0]
-        params = {}
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+            if args[0] not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        args_list = param[1:]
-
-        for arg in args_list:
-            key, value = arg.split('=')
-            if value[0] == '"' and value[-1] == '"':
-                value = value[1:-1].replace('_', ' ')
-            elif '.' in value:
-                value = float(value)
-            else:
-                try:
-                    value = int(value)
-                except ValueError:
+            for i in range(1, len(args)):
+                if '=' not in args[i]:
                     continue
-            params[key] = value
-        new_instance = HBNBCommand.classes[class_name]()
-        for key, value in params.items():
-            setattr(new_instance, key, value)
+                a, b = args[i].split("=")
+                if b.startswith("\""):
+                    b = b[1:-1]
+                if not b.replace('.', '', 1).replace('-', '', 1).isdigit()\
+                        or b.startswith('0'):
+                    b = b.replace('_', ' ')
+                elif '.' in b:
+                    b = float(b)
+                else:
+                    b = int(b)
+                d[a] = b
 
-        storage.save()
+            new_instance = HBNBCommand.classes[args[0]](**d)
+        storage.new(new_instance)
         print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -341,7 +345,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
