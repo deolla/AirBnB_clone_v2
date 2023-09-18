@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             if arg not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            new_instance = HBNBCommand.classes[args]()
+            new_instance = HBNBCommand.classes[arg]()
         else:
             dict_arg = {}
             args = arg.split()
