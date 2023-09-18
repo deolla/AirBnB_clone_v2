@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """db storage"""
-import os
+from os import getenv
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models.base_model import Base
