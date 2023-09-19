@@ -6,17 +6,17 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
 
-place_amenity = Table("place_amenity", Base.metadata,
-                Column("place_id", String(60), ForeignKey("places.id"),
-                    primary_key=True, nullable=False),
-                Column("amenity_id", String(60), ForeignKey("amenities.id"),
-                    primary_key=True, nullable=False))
+place_amenity = Table("place_amenity", Base.metadata, 
+                      Column("place_id", String(60), ForeignKey("places.id"), 
+                             primary_key=True, nullable=False), 
+                             Column("amenity_id", String(60), ForeignKey("amenities.id"), 
+                                    primary_key=True, nullable=False))
 
 
 if storage_type == "db":
     class Place(BaseModel, Base):
         """ A place to stay
-            
+
             Attributes:
                 city_id = ""
                 user_id = ""
@@ -45,8 +45,8 @@ if storage_type == "db":
 
         amenities = relationship("Amenity", back_populates="place_amenities",
                                  secondary=place_amenity, viewonly=False)
-        
-        reviews = relationship("Review", backref="place", 
+
+        reviews = relationship("Review", backref="place",
                                cascade="all, delete-orphan")
 else:
     class Place(BaseModel):
@@ -78,7 +78,10 @@ else:
 
         @property
         def amenities(self):
-            """Getter attribute amenities that returns the list of Amenity instances"""
+            """
+            Getter attribute amenities that returns
+            the list of Amenity instances
+            """
             from models import storage
             instance = []
             for i in self.amenity_id:
@@ -98,7 +101,10 @@ else:
 
         @property
         def reviews(self):
-            """Getter attr reviews that returns the list of review instances"""
+            """
+            Getter attr reviews that returns
+            the list of review instances
+            """
             from models import storage
             review_list = []
             for review in storage.all("Review").values():
