@@ -14,7 +14,7 @@ if storage_type == "db":
                 city_id = ""
                 user_id = ""
                 name = ""
-                descriptiin = ""
+                description = ""
                 number_room = 0
                 number_bathroom = 0
                 max_guest = 0
