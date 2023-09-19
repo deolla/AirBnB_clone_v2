@@ -6,14 +6,6 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
 
-place_amenity = Table("place_amenity", Base.metadata,
-                      Column("place_id", String(60), ForeignKey("places.id"),
-                             primary_key=True, nullable=False),
-                      Column("amenity_id", String(60),
-                             ForeignKey("amenities.id"),
-                             primary_key=True, nullable=False))
-
-
 if storage_type == "db":
     class Place(BaseModel, Base):
         """ A place to stay
@@ -29,7 +21,6 @@ if storage_type == "db":
                 price_by_night = 0
                 latitude = 0.0
                 longitude = 0.0
-                amenity_ids = []
         """
         __tablename__ = 'places'
 
@@ -43,9 +34,6 @@ if storage_type == "db":
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-
-        amenities = relationship("Amenity", back_populates="place_amenities",
-                                 secondary=place_amenity, viewonly=False)
 
         reviews = relationship("Review", backref="place",
                                cascade="all, delete-orphan")
@@ -63,7 +51,6 @@ else:
                 price_by_night = 0
                 latitude = 0.0
                 longitude = 0.0
-                amenity_ids = []
         """
         city_id = ""
         user_id = ""
@@ -75,7 +62,6 @@ else:
         price_by_night = 0
         latitude = 0.0
         longitude = 0.0
-        amenity_ids = []
 
         @property
         def reviews(self):
