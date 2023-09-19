@@ -6,6 +6,13 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
 
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id", String(60), ForeignKey("places.id"),
+                             primary_key=True, nullable=False),
+                      Column("amenity_id", String(60), ForeignKey("amenities.id"),
+                             primary_key=True, nullable=False))
+
+
 if storage_type == "db":
     class Place(BaseModel, Base):
         """ A place to stay
@@ -37,6 +44,8 @@ if storage_type == "db":
 
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
+        amenities = relationship("Amenity", back_populates="place_amenities",
+                                 secondary=place_amenity, viewonly=False)
 else:
     class Place(BaseModel):
         """ A place to stay
@@ -75,3 +84,17 @@ else:
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+
+        @property
+        def amenity(self):
+            """ Getter attr for amenity """
+            from models import storage
+            lists = [m for m in storage.all().values()
+                    if m.__class__.__name__ == "Amenity"
+                    and m.id in self.amenity_ids]
+            return lists
+
+        @amenities.setter
+        def amenities(self, lists):
+            if type(lists) == Amenity:
+                self.amenity_ids.append(lists.id)

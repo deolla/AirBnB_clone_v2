@@ -9,6 +9,7 @@ from models.place import Place
 from models.state import State
 from models.city import City
 from models.review import Review
+from models.amenity import Amenity
 
 metadata_obj = MetaData()
 
@@ -23,7 +24,7 @@ class DBStorage:
     __engine = None
     __session = None
 
-    classes = [State, City, Place, User, Review]
+    classes = [State, City, Place, User, Review, Amenity]
 
     def __init__(self):
         user = os.getenv("HBNB_MYSQL_USER")
