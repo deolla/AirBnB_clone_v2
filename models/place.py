@@ -35,8 +35,8 @@ if storage_type == "db":
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
 
-        reviews = relationship("Review", backref="places",
-                               cascade="all, delete-orphan")
+        reviews = relationship("Review", backref="place",
+                               cascade="all, delete")
 else:
     class Place(BaseModel):
         """ A place to stay
