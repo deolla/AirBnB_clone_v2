@@ -78,29 +78,6 @@ else:
         amenity_ids = []
 
         @property
-        def amenities(self):
-            """
-            Getter attribute amenities that returns
-            the list of Amenity instances
-            """
-            from models import storage
-            instance = []
-            for i in self.amenity_id:
-                amenity = storage.get('Amenity', amenity_id)
-                if amenity:
-                    instance.append(amenity)
-            return instance
-
-        @amenities.setter
-        def amenities(self, amenity_obj):
-            """Setter attribute amenities that handles append method
-            for adding an Amenity.id"""
-            if isinstance(amenity_obj, Amenity):
-                if not hasattr(self, 'amenity_ids'):
-                    self.amenity_ids = []
-                self.amenity_ids.append(amenity_obj.id)
-
-        @property
         def reviews(self):
             """
             Getter attr reviews that returns
