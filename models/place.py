@@ -88,7 +88,7 @@ else:
             for i in self.amenity_id:
                 amenity = storage.get('Amenity', amenity_id)
                 if amenity:
-                    intance.append(amenity)
+                    instance.append(amenity)
             return instance
 
         @amenities.setter
