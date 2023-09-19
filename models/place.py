@@ -45,6 +45,9 @@ if storage_type == "db":
 
         amenities = relationship("Amenity", back_populates="place_amenities",
                                  secondary=place_amenity, viewonly=False)
+        
+        reviews = relationship("Review", backref="place", 
+                               cascade="all, delete-orphan")
 else:
     class Place(BaseModel):
         """ A place to stay
@@ -93,5 +96,12 @@ else:
                     self.amenity_ids = []
                 self.amenity_ids.append(amenity_obj.id)
 
-
-    #reviews = relationship("Review", back_populates="place", cascade="all, delete-orphan")
+        @property
+        def reviews(self):
+            """Getter attr reviews that returns the list of review instances"""
+            from models import storage
+            review_list = []
+            for review in storage.all("Review").values():
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
