@@ -24,7 +24,7 @@ class DBStorage:
     __engine = None
     __session = None
 
-    classes = [State, City, Place, User, Amenity, Review]
+    classes = [State, City, Place, User, Review]
 
     def __init__(self):
         user = os.getenv("HBNB_MYSQL_USER")
