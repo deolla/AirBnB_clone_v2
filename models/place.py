@@ -12,6 +12,7 @@ place_amenity = Table("place_amenity", Base.metadata,
                 Column("amenity_id", String(60), ForeignKey("amenities.id"),
                     primary_key=True, nullable=False))
 
+
 if storage_type == "db":
     class Place(BaseModel, Base):
         """ A place to stay
@@ -91,3 +92,6 @@ else:
                 if not hasattr(self, 'amenity_ids'):
                     self.amenity_ids = []
                 self.amenity_ids.append(amenity_obj.id)
+
+
+    #reviews = relationship("Review", back_populates="place", cascade="all, delete-orphan")
