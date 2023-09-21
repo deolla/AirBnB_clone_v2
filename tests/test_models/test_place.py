@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ """
-from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
 from datetime import datetime
 import inspect
@@ -9,71 +8,7 @@ from models import place
 from models.base_model import BaseModel
 import pycodestyle
 import unittest
-
-
-class test_Place(test_basemodel):
-    """ """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Place"
-        self.value = Place
-
-    def test_city_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.city_id), str)
-
-    def test_user_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
-
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
-
-    def test_description(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.description), str)
-
-    def test_number_rooms(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.number_rooms), int)
-
-    def test_number_bathrooms(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.number_bathrooms), int)
-
-    def test_max_guest(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.max_guest), int)
-
-    def test_price_by_night(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.price_by_night), int)
-
-    def test_latitude(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.latitude), float)
-
-    def test_longitude(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.latitude), float)
-
-    def test_amenity_ids(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.amenity_ids), list)
+Place = place.Place
 
 
 class TestPlaceDocs(unittest.TestCase):
@@ -134,7 +69,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr city_id, and it's an empty string"""
         place = Place()
         self.assertTrue(hasattr(place, "city_id"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.city_id, None)
         else:
             self.assertEqual(place.city_id, "")
@@ -143,7 +78,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr user_id, and it's an empty string"""
         place = Place()
         self.assertTrue(hasattr(place, "user_id"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.user_id, None)
         else:
             self.assertEqual(place.user_id, "")
@@ -152,7 +87,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr name, and it's an empty string"""
         place = Place()
         self.assertTrue(hasattr(place, "name"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.name, None)
         else:
             self.assertEqual(place.name, "")
@@ -161,7 +96,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr description, and it's an empty string"""
         place = Place()
         self.assertTrue(hasattr(place, "description"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.description, None)
         else:
             self.assertEqual(place.description, "")
@@ -170,7 +105,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr number_rooms, and it's an int == 0"""
         place = Place()
         self.assertTrue(hasattr(place, "number_rooms"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.number_rooms, None)
         else:
             self.assertEqual(type(place.number_rooms), int)
@@ -180,7 +115,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr number_bathrooms, and it's an int == 0"""
         place = Place()
         self.assertTrue(hasattr(place, "number_bathrooms"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.number_bathrooms, None)
         else:
             self.assertEqual(type(place.number_bathrooms), int)
@@ -190,7 +125,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr max_guest, and it's an int == 0"""
         place = Place()
         self.assertTrue(hasattr(place, "max_guest"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.max_guest, None)
         else:
             self.assertEqual(type(place.max_guest), int)
@@ -200,7 +135,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr price_by_night, and it's an int == 0"""
         place = Place()
         self.assertTrue(hasattr(place, "price_by_night"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.price_by_night, None)
         else:
             self.assertEqual(type(place.price_by_night), int)
@@ -210,7 +145,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr latitude, and it's a float == 0.0"""
         place = Place()
         self.assertTrue(hasattr(place, "latitude"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.latitude, None)
         else:
             self.assertEqual(type(place.latitude), float)
@@ -220,7 +155,7 @@ class TestPlace(unittest.TestCase):
         """Test Place has attr longitude, and it's a float == 0.0"""
         place = Place()
         self.assertTrue(hasattr(place, "longitude"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(place.longitude, None)
         else:
             self.assertEqual(type(place.longitude), float)

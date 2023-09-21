@@ -19,10 +19,10 @@ if storage_type == "db":
                               cascade="all, delete")
 else:
     class State(BaseModel):
-        """ State class 
+        """ State class
 
             Attribute:
-                name: ""
+                name: "string"
         """
         name = ""
 
@@ -31,6 +31,6 @@ else:
             """setter property"""
             from models import storage
             lista = [pop for pop in storage.all().values()
-                    if pop.__class__.__name__ == "City" and
-                    pop.state_id == self.id]
+                     if pop.__class__.__name__ == "City" and
+                     pop.state_id == self.id]
             return lista

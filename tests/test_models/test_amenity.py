@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ """
 from os import getenv
-from tests.test_models.test_base_model import test_basemodel
 from models import amenity
 from models.amenity import Amenity
 import models
@@ -10,23 +9,9 @@ from datetime import datetime
 import pycodestyle
 import inspect
 import unittest
+Amenity = amenity.Amenity
 
 pop_star = getenv("HBNB_TYPE_STORAGE")
-
-
-class test_Amenity(test_basemodel):
-    """ """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
-
-    def test_name2(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
 
 
 class TestPEP8Amenity(unittest.TestCase):

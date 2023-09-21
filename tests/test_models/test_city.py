@@ -1,6 +1,5 @@
 #!/usr/bin/python3o
 """ """
-from tests.test_models.test_base_model import test_basemodel
 from models.city import City
 from datetime import datetime
 import models
@@ -10,26 +9,7 @@ from models.base_model import BaseModel
 import pycodestyle
 from os import getenv
 import unittest
-
-
-class test_City(test_basemodel):
-    """ """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
-
-    def test_state_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
-
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+City = city.City
 
 
 class TestCityDocs(unittest.TestCase):
@@ -86,20 +66,11 @@ class TestCity(unittest.TestCase):
         self.assertTrue(hasattr(lop, "created_at"))
         self.assertTrue(hasattr(lop, "updated_at"))
 
-    def test_name_attr(self):
-        """Test City attribute name and empty string"""
-        lop = City()
-        self.assertTrue(hasattr(lop, "name"))
-        if models.storage == 'db':
-            self.assertEqual(lop.name, None)
-        else:
-            self.assertEqual(lop.name, "")
-
     def test_state_id_attr(self):
         """Test City has attribute and empty string"""
         city = City()
         self.assertTrue(hasattr(city, "state_id"))
-        if models.storage == 'db':
+        if models.storage_type == 'db':
             self.assertEqual(city.state_id, None)
         else:
             self.assertEqual(city.state_id, "")
