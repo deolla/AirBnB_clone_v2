@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ """
+from tests.test_models.test_base_model import test_basemodel
+from models.amenity import Amenity
 from os import getenv
 from models import amenity
 from models.amenity import Amenity

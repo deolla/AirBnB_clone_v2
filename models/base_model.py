@@ -7,9 +7,9 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-time = "%Y-%m-%dT%H:%M:%S.%f"
-
 Base = declarative_base()
+
+time = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 class BaseModel():
@@ -27,7 +27,7 @@ class BaseModel():
                             default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Instantiates a new model"""
+        """Initialization of the base model"""
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":

@@ -1,15 +1,114 @@
 #!/usr/bin/python3
 """Test BaseModel for expected behavior and documentation"""
 from datetime import datetime, timedelta
+import datetime
 from models.base_model import BaseModel
 import inspect
 import models
+import os
+import json
 import pep8 as pycodestyle
 import time
 import unittest
 from unittest import mock
 BaseModel = models.base_model.BaseModel
 module_doc = models.base_model.__doc__
+
+
+@unittest.skipIf(
+    os.getenv("HBNB_TYPE_STORAGE") == "db",
+    "Test is not relevant for BaseModel"
+)
+class test_basemodel(unittest.TestCase):
+    """document documt"""
+
+    def __init__(self, *args, **kwargs):
+        """document documt"""
+        super().__init__(*args, **kwargs)
+        self.name = "BaseModel"
+        self.value = BaseModel
+
+    def setUp(self):
+        """document documt"""
+        pass
+
+    def tearDown(self):
+        try:
+            os.remove("file.json")
+        except Exception:
+            pass
+
+    def test_default(self):
+        """document documt"""
+        i = self.value()
+        self.assertEqual(type(i), self.value)
+
+    def test_kwargs(self):
+        """document documt"""
+        i = self.value()
+        copy = i.to_dict()
+        new = BaseModel(**copy)
+        self.assertFalse(new is i)
+
+    def test_kwargs_int(self):
+        """document documt"""
+        i = self.value()
+        copy = i.to_dict()
+        copy.update({1: 2})
+        with self.assertRaises(TypeError):
+            new = BaseModel(**copy)
+
+    def test_save(self):
+        """Testing save"""
+        i = self.value()
+        i.save()
+        key = self.name + "." + i.id
+        with open("file.json", "r") as f:
+            j = json.load(f)
+            self.assertEqual(j[key], i.to_dict())
+
+    def test_str(self):
+        """document documt"""
+        i = self.value()
+        self.assertEqual(str(i), "[{}] ({}) {}".
+                         format(self.name, i.id, i.__dict__))
+
+    def test_todict(self):
+        """document documt"""
+        i = self.value()
+        n = i.to_dict()
+        self.assertEqual(i.to_dict(), n)
+
+    def test_kwargs_none(self):
+        """document documt"""
+        n = {None: None}
+        with self.assertRaises(TypeError):
+            new = self.value(**n)
+
+    def test_kwargs_one(self):
+        """document documt"""
+        n = {"name": "nuux"}
+        new = self.value(**n)
+        self.assertEqual(new.name, n["name"])
+
+    def test_id(self):
+        """document documt"""
+        new = self.value()
+        self.assertEqual(type(new.id), str)
+
+    def test_created_at(self):
+        """document documt"""
+        new = self.value()
+        self.assertEqual(type(new.created_at), datetime.datetime)
+
+    def test_updated_at(self):
+        """document documt"""
+        new = self.value()
+        self.assertEqual(type(new.updated_at), datetime.datetime)
+        n = new.to_dict()
+        new = BaseModel(**n)
+        new.save()
+        self.assertFalse(new.created_at == new.updated_at)
 
 
 class TestBaseModelDocs(unittest.TestCase):
@@ -59,26 +158,6 @@ class TestBaseModelDocs(unittest.TestCase):
 
 class TestBaseModel(unittest.TestCase):
     """Test the BaseModel class"""
-    def test_instantiation(self):
-        """Test that object is correctly created"""
-        inst = BaseModel()
-        self.assertIs(type(inst), BaseModel)
-        inst.name = "Holberton"
-        inst.number = 89
-        attrs_types = {
-            "id": str,
-            "created_at": datetime,
-            "updated_at": datetime,
-            "name": str,
-            "number": int
-        }
-        for attr, typ in attrs_types.items():
-            with self.subTest(attr=attr, typ=typ):
-                self.assertIn(attr, inst.__dict__)
-                self.assertIs(type(inst.__dict__[attr]), typ)
-        self.assertEqual(inst.name, "Holberton")
-        self.assertEqual(inst.number, 89)
-
     def test_uuid(self):
         """Test that id is a valid uuid"""
         inst1 = BaseModel()
