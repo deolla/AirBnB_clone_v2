@@ -9,8 +9,9 @@ import models
 place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60), ForeignKey("places.id"),
                              primary_key=True, nullable=False),
-                      Column("amenity_id", String(60), ForeignKey("amenities.id"),
-                             primary_key=True, nullable=False))
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"), primary_key=True,
+                             nullable=False))
 
 
 if storage_type == "db":
@@ -18,10 +19,10 @@ if storage_type == "db":
         """ A place to stay
 
             Attributes:
-                city_id = ""
-                user_id = ""
-                name = ""
-                description = ""
+                city_id = "string"
+                user_id = "string"
+                name = "string"
+                description = "string"
                 number_room = 0
                 number_bathroom = 0
                 max_guest = 0
@@ -41,6 +42,7 @@ if storage_type == "db":
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+        amenity_ids = []
 
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
@@ -71,6 +73,7 @@ else:
         price_by_night = 0
         latitude = 0.0
         longitude = 0.0
+        amenity_ids = []
 
         @property
         def reviews(self):
@@ -90,8 +93,8 @@ else:
             """ Getter attr for amenity """
             from models import storage
             lists = [m for m in storage.all().values()
-                    if m.__class__.__name__ == "Amenity"
-                    and m.id in self.amenity_ids]
+                     if m.__class__.__name__ == "Amenity" and
+                     m.id in self.amenity_ids]
             return lists
 
         @amenities.setter
