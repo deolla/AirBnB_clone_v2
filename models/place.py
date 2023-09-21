@@ -86,7 +86,7 @@ else:
             return review_list
 
         @property
-        def amenity(self):
+        def amenities(self):
             """ Getter attr for amenity """
             from models import storage
             lists = [m for m in storage.all().values()

@@ -27,6 +27,7 @@ class DBStorage:
     classes = [State, City, Place, User, Review, Amenity]
 
     def __init__(self):
+        """ Initailsing """
         user = os.getenv("HBNB_MYSQL_USER")
         passwd = os.getenv("HBNB_MYSQL_PWD")
         host = os.getenv("HBNB_MYSQL_HOST")
@@ -51,7 +52,7 @@ class DBStorage:
 
         if (cls is not None and cls in self.classes) or cls is None:
             if cls is not None:
-              target = [cls]
+                target = [cls]
             for i in target:
                 instances = self.__session.query(i)
                 for k in instances:

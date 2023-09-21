@@ -9,7 +9,7 @@ from sqlalchemy.orm import relationship
 if storage_type == "db":
     class City(BaseModel, Base):
         """ City class
-            
+
             ATTRIBUTE:
                 state ID
                 name
@@ -22,7 +22,7 @@ if storage_type == "db":
 else:
     class City(BaseModel):
         """ The city class
-            
+
             Attributes:
                 state_id
                 name

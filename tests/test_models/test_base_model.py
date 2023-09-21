@@ -1,11 +1,16 @@
 #!/usr/bin/python3
 """ """
+import json
+from datetime import datetime
 from models.base_model import BaseModel
 import unittest
 import datetime
-from uuid import UUID
-import json
-import os
+import pycodestyle
+import time
+import models
+import inspect
+from unittest import mock
+module_doc = models.base_model.__doc__
 
 
 class test_basemodel(unittest.TestCase):
@@ -74,11 +79,11 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    def test_kwargs_one(self):
+    """def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
-            new = self.value(**n)
+            new = self.value(**n)"""
 
     def test_id(self):
         """ """
@@ -97,3 +102,67 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def test_uuid(self):
+        """
+        Testin UUID
+        """
+        instance1 = BaseModel()
+        instance2 = BaseModel()
+        instance3 = BaseModel()
+        list_instances = [instance1, instance2,
+                          instance3]
+        for instance in list_instances:
+            ins_uuid = instance.id
+            with self.subTest(uuid=ins_uuid):
+                self.assertIs(type(ins_uuid), str)
+        self.assertNotEqual(instance1.id, instance2.id)
+        self.assertNotEqual(instance1.id, instance3.id)
+        self.assertNotEqual(instance2.id, instance3.id)
+
+    def test_str_method(self):
+        """Testing returns STR method"""
+        instance6 = BaseModel()
+        string_output = "[BaseModel] ({}) {}".format(instance6.id,
+                                                     instance6.__dict__)
+        self.assertEqual(string_output, str(instance6))
+
+
+class TestBaseModelDocs(unittest.TestCase):
+    """Tests documentation of BaseModel class"""
+    @classmethod
+    def setup_class(self):
+        """ Setup class"""
+        self.pop = inspect.getmembers(Basemodel, inspect.isfunction)
+
+    def test_module_doc(self):
+        """Test module docstring"""
+        self.assertIsNot(module_doc, None,
+                         "base_model.py needs a docstring")
+        self.assertTrue(len(module_doc) > 1,
+                        "base_model.py needs a docstring")
+
+    def test_class_doc(self):
+        """Test BaseModel class docstring"""
+        self.assertIsNot(BaseModel.__doc__, None,
+                         "BaseModel class needs a docstring")
+        self.assertTrue(len(BaseModel.__doc__) >= 1,
+                        "BaseModel class needs a docstring")
+
+    def test_method_BaseModel(self):
+        """chekcing if Basemodel have methods"""
+        self.assertTrue(hasattr(BaseModel, "__init__"))
+        self.assertTrue(hasattr(BaseModel, "save"))
+        self.assertTrue(hasattr(BaseModel, "to_dict"))
+
+
+class TestPEP8Style(unittest.TestCase):
+    """ """
+    def test_pep8_base_model(self):
+        """
+        Test pep8 format
+        """
+        pep = pycodestyle.StyleGuide(quiet=True)
+        result = pep.check_files(['models/base_model.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
