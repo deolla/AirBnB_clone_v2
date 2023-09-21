@@ -22,10 +22,7 @@ classes = {"Amenity": Amenity, "City": City, "Place": Place,
 
 pop_star = os.getenv("HBNB_TYPE_STORAGE")
 
-@unittest.skipIf(
-    os.getenv("HBNB_TYPE_STORAGE") != "db",
-    "Test is not relevant for DBStorage"
-)
+
 class TestDBStorageDocs(unittest.TestCase):
     """Test for documentation and style of DBStorage"""
     @classmethod
