@@ -1,45 +1,27 @@
 #!/usr/bin/env bash
-# Write a Bash script that sets up your web servers for the deployment of web_static.
+# Sets up web servers for the deployment of web_static
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
 
-# Install Nginx if not already installed
-if ! command -v nginx &> /dev/null; then
-	apt-get -y update
-	apt-get install -y nginx
-fi
-
-mkdir -p /data/web_static/{shared,releases/test}
-
-# Create a test HTML file
-cat <<EOF > /data/web_static/releases/test/index.html
-<html>
+sudo mkdir -p /data/
+sudo mkdir -p /data/web_static/
+sudo mkdir -p /data/web_static/releases/
+sudo mkdir -p /data/web_static/shared/
+sudo mkdir -p /data/web_static/releases/test/
+sudo touch /data/web_static/releases/test/index.html
+sudo echo "<html>
   <head>
   </head>
   <body>
-    ALX School
+   ALX School
   </body>
-</html>
-EOF
-# Remove the existing symbolic link if it exists and then create a new one
-if [ -L /data/web_static/current ]; then
-	rm /data/web_static/current
-fi
-ln -s /data/web_static/releases/test/ /data/web_static/current
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
-# Change ownership of /data/ directory recursively
-chown -R ubuntu:ubuntu /data/
+sudo ln -s -f /data/web_static/releases/test/ /data/web_static/current
 
-config_file="/etc/nginx/sites-available/default"
-tmp_config_file="/etc/nginx/sites-available/default.tmp"
+sudo chown -R ubuntu:ubuntu /data/
 
-# Create a temporary config file with the updated Nginx configuration
-cp "$config_file" "$tmp_config_file"
-sed -i 's@^\(\s*root\s*\).*;\$@\1/data/web_static/current;@' "$tmp_config_file"
+sudo sed -i '/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-enabled/default
 
-# Add the alias directive to the Nginx configuration
-sed -i '/^\s*location \/ {/a \        location /hbnb_static/ {\n            alias /data/web_static/current/;\n        }' "$tmp_config_file"
-
-# Replace the original config file with the updated one
-mv "$tmp_config_file" "$config_file"
-
-# Restart Nginx
-service nginx restart
+sudo service nginx restart

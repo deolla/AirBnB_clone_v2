@@ -1,43 +1,62 @@
 #!/usr/bin/python3
 """
-Fabric script to deploy tgz archive
 """
+from fabric.api import local
+from datetime import datetime
+from fabric.api import env
+from fabric.operations import put, run
 from os.path import exists
-from fabric.api import put, run, env
 
 env.hosts = ['54.146.88.8', '54.146.88.136']
 
+def do_pack():
+    """Create a .tgz archive from the contents of the web_static folder."""
+    now = datetime.now()
+    timestamp = now.strftime("%Y%m%d%H%M%S")
+    archive_name = f"web_static_{timestamp}.tgz"
+    archive_path = f"versions/{archive_name}"
+
+    local("mkdir -p versions")
+    result = local(f"tar -czvf {archive_path} web_static")
+
+    if result.failed:
+        return None
+    else:
+        return archive_path
+
 
 def do_deploy(archive_path):
-    """
-    Copies archive file from local to my webservers
-    """
-
     if not exists(archive_path):
         return False
+
     try:
-        file_name = archive_path.split("/")[-1].split(".")[0]
+        archive_filename = archive_path.split("/")[-1]
+        archive_no_ext = archive_filename.split(".")[0]
+
+        # Upload the archive to /tmp/ directory on the web server
         put(archive_path, "/tmp/")
 
-        run("mkdir -p /data/web_static/releases/{}".format(file_name))
+        # Create the release directory
+        run("mkdir -p /data/web_static/releases/{}/".format(archive_no_ext))
 
-        run("tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/"
-            .format(file_name, file_name))
+        # Uncompress the archive to the release directory
+        run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(archive_filename, archive_no_ext))
 
-        run('rm -rf /tmp/{}.tgz'.format(file_name))
+        # Remove the uploaded archive from /tmp/
+        run("rm /tmp/{}".format(archive_filename))
 
-        run(('mv /data/web_static/releases/{}/web_static/* ' +
-            II'/data/web_static/releases/{}/')
-            .format(file_name, file_name))
+        # Move the contents of the release directory to the current symbolic link
+        run("mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}/".format(archive_no_ext, archive_no_ext))
 
-        run('rm -rf /data/web_static/releases/{}/web_static'
-            .format(file_name))
+        run("rm -rf /data/web_static/releases/{}/web_static".format(archive_no_ext))
 
-        run('rm -rf /data/web_static/current')
+        # Remove the existing current symbolic link
+        run("rm -rf /data/web_static/current")
 
-        run(('ln -s /data/web_static/releases/{}/' +
-            ' /data/web_static/current')
-            .format(file_name))
+        run("ln -s /data/web_static/releases/{}/ /data/web_static/current".format(archive_no_ext))
+
         return True
-    except Exception:
+
+    except Exception as e:
+        print(e)
         return False
