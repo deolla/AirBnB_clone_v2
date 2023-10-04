@@ -1,10 +1,7 @@
 #!/usr/bin/python3
 """
 Fabric script to deploy tgz archive
-fab -f 2-do_deploy_web_static.py do_deploy:archive_path=filepath
-    -i private-key -u user
 """
-
 from os.path import exists
 from fabric.api import put, run, env
 
@@ -13,7 +10,7 @@ env.hosts = ['54.146.88.8', '54.146.88.136']
 
 def do_deploy(archive_path):
     """
-    copies archive file from local to my webservers
+    Copies archive file from local to my webservers
     """
 
     if not exists(archive_path):
@@ -30,7 +27,7 @@ def do_deploy(archive_path):
         run('rm -rf /tmp/{}.tgz'.format(file_name))
 
         run(('mv /data/web_static/releases/{}/web_static/* ' +
-            '/data/web_static/releases/{}/')
+            II'/data/web_static/releases/{}/')
             .format(file_name, file_name))
 
         run('rm -rf /data/web_static/releases/{}/web_static'
