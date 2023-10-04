@@ -2,9 +2,9 @@
 """
 Fabric script to distribute an archive to web servers and deploy it
 """
-
 from fabric.api import env, put, run
 from os.path import exists
+
 
 env.hosts = ['54.146.88.8', '54.146.88.136']
 env.user = 'ubuntu'
