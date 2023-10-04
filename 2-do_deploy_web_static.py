@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-"""Compress web static package
+"""
 """
 from fabric.api import *
 from datetime import datetime
 from os import path
+from time import sleep
 
 
 env.hosts = ['54.146.88.8', '54.146.88.136']
@@ -34,8 +35,11 @@ releases/web_static_{}/'.format(timestamp))
                 # remove archive
                 run('sudo rm /tmp/web_static_{}.tgz'.format(timestamp))
 
+                sleep(5)
                 # move contents into host web_static
-                run('sudo mv /data/web_static/releases/web_static_{}/web_static/* \
+                run('sudo rm -rf /data/web_static/releases/web_static_20231004104612/web_static/images')
+                run('sudo rm -rf /data/web_static/releases/web_static_20231004104612/web_static/styles')
+                run('sudo mv -f  /data/web_static/releases/web_static_{}/web_static/* \
 /data/web_static/releases/web_static_{}/'.format(timestamp, timestamp))
 
                 # remove extraneous web_static dir
