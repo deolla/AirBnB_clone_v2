@@ -1,20 +1,26 @@
 #!/usr/bin/python3
 """Fabric script"""
+import os
+from fabric.api import *
 
-from fabric.api import local
-from time import strftime
-from datetime import date
+env.hosts = ['54.146.88.8', '54.146.88.136']
 
 
-def do_pack():
-    """A Generates archive the contents of web_static folder"""
-    f = strftime("%Y%m%d%H%M%S")
-    try:
-        local("mkdir -p versions")
-        local("tar -czvf versions/web_static_{}.tgz web_static/"
-                .format(f))
+def do_clean(number=0):
+    """Delete all out-of-date archives.
 
-        return "versions/web_static_{}.tgz".format(f)
+    Args:
+        number: int.
+    """
+    number = 1 if int(number) == 0 else int(number)
 
-    except Exception as e:
-        return None
+    m = sorted(os.listdir("versions"))
+    [m.pop() for i in range(number)]
+    with lcd("versions"):
+        [local("rm ./{}".format(a)) for a in m]
+
+    with cd("/data/web_static/releases"):
+        m = run("ls -tr").split()
+        m = [a for a in m if "web_static_" in a]
+        [m.pop() for i in range(number)]
+        [run("rm -rf ./{}".format(a)) for a in m]
