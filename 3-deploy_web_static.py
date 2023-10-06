@@ -9,7 +9,7 @@ env.hosts = ['54.146.88.8', '54.146.88.136']
 
 
 def do_pack():
-    """generates a tgz archive"""
+    """tgz archive"""
     try:
         date = datetime.now().strftime("%Y%m%d%H%M%S")
         if isdir("versions") is False:
@@ -22,7 +22,7 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    """distributes  achiveweb servers"""
+    """distributing  achive"""
     if exists(archive_path) is False:
         return False
     try:
