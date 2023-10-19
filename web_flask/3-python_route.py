@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Script that starts a Flask web application"""
-from flask import Flask, request
-from markupsafe import escape
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -9,8 +8,7 @@ app = Flask(__name__)
 @app.route('/', strict_slashes=False)
 def hello():
         """/: display Hello HBNB!"""
-        name = request.args.get("name", "HBNB")
-        return 'Hello {}!'.format(escape(name))
+        return 'Hello HBNB'
 
 
 @app.route('/hbnb', strict_slashes=False)
