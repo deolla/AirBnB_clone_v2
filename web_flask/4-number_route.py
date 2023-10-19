@@ -8,19 +8,19 @@ app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def hello():
-        """/: display �~@~\Hello HBNB!�~@~]"""
-        name = request.args.get("name", "HBNB")
-        return 'Hello {}!'.format(escape(name))
+        """/: display Hello HBNB!]"""
+        return 'Hello HBNB'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-        """/hbnb: display �~@~\HBNB�~@~]"""
+        """/hbnb: display HBNB~]"""
         return "HBNB"
+
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_text(text):
-        """/c/<text>: display �~@~\C �~@~] followed by the value of text
+        """/c/<text>: display followed by the value of text
             (replace underscore _ symbols with a space
         """
         text = text.replace('_', ' ')
@@ -30,17 +30,17 @@ def c_text(text):
 @app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_text(text):
-        """Display �~@~\Python �~@~], followed by the value of the text vari
+        """Display Python, followed by the value of the text variable
            (replace underscore _ symbols with a space)
-            The default value of text is �~@~\is cool�~@~]
+            The default value of text is cool
         """
         text = text.replace('_', ' ')
         return "Python {}".format(text)
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
-def number():
-        """/number/<n>: display “n is a number” only if n is an integer"""
+def is_number(n):
+        """/number/<n>: display is a number only if n is an integer"""
         return '{} is a number'.format(n)
 
 if __name__ == '__main__':
