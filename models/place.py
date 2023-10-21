@@ -44,6 +44,7 @@ if storage_type == "db":
         longitude = Column(Float, nullable=True)
         amenity_ids = []
 
+        cities = relationship("City", back_populates="places")
         reviews = relationship("Review", backref="place",
                                cascade="all, delete")
         amenities = relationship("Amenity", back_populates="place_amenities",

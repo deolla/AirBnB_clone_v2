@@ -24,7 +24,7 @@ class DBStorage:
     __engine = None
     __session = None
 
-    classes = [State, City, Place, User, Review, Amenity]
+    classes = [User, State, City, Amenity, Place, Review]
 
     def __init__(self):
         """ Initailsing """
