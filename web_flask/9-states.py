@@ -1,34 +1,37 @@
 #!/usr/bin/python3
-"""Importing Flask to run the web app"""
-from flask import Flask, render_template
+""" script that starts a Flask web application """
+from flask import Flask
+from flask import render_template
 from models import storage
 from models.state import State
-
-
+from models.city import City
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
-def close(self):
-    """ Method to close the session """
+def remove_close(self):
+    """Delete database"""
     storage.close()
 
 
-@app.route('/states', strict_slashes=False)
-def state():
-    """Displays a html page with states"""
-    states = storage.all(State)
-    return render_template('9-states.html', states=states, mode='all')
+@app.route('/states')
+def states_list():
+    """list of all State objects present"""
+    dic_states = storage.all(State)
+    return render_template('9-states.html', states=dic_states, index="")
 
 
-@app.route('/states/<id>', strict_slashes=False)
-def state_by_id(id):
-    """Displays a html page with citys of that state"""
-    for state in storage.all(State).values():
-        if state.id == id:
-            return render_template('9-states.html', states=state, mode='id')
-    return render_template('9-states.html', states=state, mode='none')
+@app.route('/states/<id>')
+def states_id_list(id):
+    """list of City objects linked to the State"""
+    dic_states = storage.all(State)
+    name = dic_states.get('State.{}'.format(id), None)
+    print(name)
+    dic_city = storage.all(City)
+    return render_template('9-states.html', index=id,
+                           cities=dic_city, states=name)
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host='0.0.0.0', port=5000)

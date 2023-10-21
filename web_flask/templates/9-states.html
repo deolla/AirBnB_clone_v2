@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <HTML lang="en">
-    <HEAD>
-        <TITLE>HBNB</TITLE>
-    </HEAD>
-    <BODY>
-        {% if not state_id %}
-            <H1>States</H1>
-	    <UL>
-	        {% for state in states.values()|sort(attribute='name') %}
-		    <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
-		{% endfor %}
-	    </UL>
-	{% elif state_id in states%}
-	    {% set state = states[state_id] %}
-	        <H1>State: {{ state.name }}</H1>
-		<H3>Cities</H3>
-		    <UL>
-			{% for city in state.cities|sort(attribute='name') %}
-                            <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-                        {% endfor %}
-		    </UL>
-	{% else %}
-	    <H1>Not found!</H1>
-	{% endif %}
-    </BODY>
+  <HEAD>
+    <TITLE>HBNB</TITLE>
+  </HEAD>
+  <BODY>
+    {% if states == None%}
+    <H1>Not found!</H1>
+    {% elif states and index != "" %}
+    <p>indice {{ index }}</p>
+    <H1>State: {{ states.name }}</H1>
+    <H3>Cities:</H3>
+    <UL>
+      {%- for item_cities in cities.values()|sort(attribute="name") %}
+      {%- if item_cities.state_id == index -%}
+      <LI>{{ item_cities.id }}: <B>{{ item_cities.name }}</B></LI><br>
+      {%- endif %}
+      {%- endfor %}
+    </UL>
+    {% else %}
+    <H1>States</H1>
+    <UL>
+      {% for item in states.values()|sort(attribute="name") %}
+      <LI>{{ item.id }}: <B>{{ item.name }}</B></LI>
+      {% endfor %}
+    </UL>
+    {% endif %}
+  </BODY>
 </HTML>
